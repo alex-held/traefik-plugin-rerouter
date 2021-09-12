@@ -156,7 +156,7 @@ func rewriteNoOp() (func(*http.Request) *http.Request, error) {
 		return r
 	}, nil
 }
-g
+
 // rewriteMyGithubURI
 // gh.alexheld.io/path   -> github.com/alex-held/path
 // 2     1     0  path         2        1        path
