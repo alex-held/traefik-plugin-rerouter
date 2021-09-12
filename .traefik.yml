@@ -5,7 +5,7 @@ displayName: ReRerouter
 type: middleware
 
 # The import path of your plugin.
-import: github.com/alex-held/traefik-plugin-rerouter
+import: github.com/alex-held/traefik-plugin-ReRouter-middleware
 
 
 # A brief description of what your plugin is doing.
