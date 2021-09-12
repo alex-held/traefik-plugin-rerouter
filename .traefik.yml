@@ -1,0 +1,19 @@
+# The name of your plugin as displayed in the Traefik Pilot web UI.
+displayName: ReRerouter
+
+# For now, `middleware` is the only type available.
+type: middleware
+
+# The import path of your plugin.
+import: github.com/alex-held/traefik-plugin-rerouter
+
+
+# A brief description of what your plugin is doing.
+summary: The ReRerouter Plugin rewrites the Request.URL based on sub-domains and paths. Outcome can be a completly differnt URL.
+
+# Configuration data for your plugin.
+# This is mandatory,
+# and Traefik Pilot will try to execute the plugin with the configuration you provide as part of its startup validity tests.
+testData:
+  Headers:
+    Version: v0.0.1

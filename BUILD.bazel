@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["rerouter-middleware.go"],
+    importpath = "github.com/alex-held/homelab/extensions/traefik/traefik-plugin-rerouter",
+    visibility = ["//visibility:public"],
+    deps = ["@com_github_rs_zerolog//log:go_default_library"],
+)
