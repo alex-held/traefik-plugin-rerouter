@@ -12,7 +12,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-const version = "v0.0.2"
+const version = "v0.0.4"
 
 // Config the plugin configuration.
 type Config struct {
