@@ -4,3 +4,5 @@ github.com/rs/zerolog
 github.com/rs/zerolog/internal/cbor
 github.com/rs/zerolog/internal/json
 github.com/rs/zerolog/log
+# github.com/traefik/yaegi v0.9.23
+## explicit
