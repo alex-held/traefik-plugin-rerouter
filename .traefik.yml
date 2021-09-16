@@ -15,4 +15,4 @@ summary: The ReRerouter Plugin rewrites the Request.URL based on sub-domains and
 # This is mandatory,
 # and Traefik Pilot will try to execute the plugin with the configuration you provide as part of its startup validity tests.
 testData:
-    Version: v0.0.7
+    Version: v0.0.8
