@@ -1,3 +1,3 @@
-module github.com/alex-held/traefik-plugin-ReRouter-middleware
+module github.com/alex-held/traefik-plugin-rerouter
 
 go 1.16
