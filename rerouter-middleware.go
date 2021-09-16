@@ -13,7 +13,7 @@ const version = "v0.0.7"
 
 // Config the plugin configuration.
 type Config struct {
-	Version string
+	Version string `json:"version,omitempty"`
 }
 
 const DefaultReRouterHeaderVersion = "X-ReRouter-Traefik-Middleware-Version"
