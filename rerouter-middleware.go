@@ -3,13 +3,10 @@ package traefik_plugin_rerouter
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	url2 "net/url"
-	"os"
 	"strings"
-
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
 const version = "v0.0.6"
@@ -27,12 +24,6 @@ const MiddleWareName = "ReRouter-Middleware"
 
 // CreateConfig creates and initializes the plugin configuration.
 func CreateConfig() *Config {
-	zerolog.NewConsoleWriter(func(w *zerolog.ConsoleWriter) {
-		w.Out = os.Stderr
-		w.NoColor = false
-		w.TimeFormat = "2006-01-02T15:04:05"
-	})
-
 	return &Config{
 		Version: version,
 	}
@@ -59,7 +50,7 @@ const (
 
 // New creates and returns a plugin instance.
 func New(ctx context.Context, next http.Handler, config *Config, name string) (http.Handler, error) {
-	log.Info().Str("name", name).Msgf("New %s instantiated", MiddleWareName)
+	log.Printf("[INFO]  New %s Middleware instantiated; name=%s\n", MiddleWareName, name)
 
 	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 		defaultUrl := req.URL.String()
@@ -84,56 +75,6 @@ func applyHeaders(req *http.Request, rewrittenRequest *http.Request, config *Con
 	req.Header.Set(DefaultReRouterHeaderReRoutedURL, req.URL.String())
 }
 
-/*
-var stackSize int
-
-type DomainStack struct {
-	parts []string
-	top   int
-}
-
-func NewDomainStackFromArray(parts []string) (s *DomainStack) {
-	rev := make([]string, len(parts))
-	for i, p := range parts {
-		rev[i-1] = p
-	}
-	s = &DomainStack{
-		parts: rev,
-		top:   len(rev) - 1,
-	}
-	return s
-}
-
-func (s *DomainStack) Push(part string) {
-	if s.top == stackSize-1 {
-		fmt.Println("Stack Overflow, cannot insert more values")
-		return
-	}
-
-	s.parts = append(s.parts, part)
-	s.top++
-	log.Trace().Msgf("pushed value %v at position %d", part, s.top)
-	return
-}
-
-func (s *DomainStack) Pop() (part string, err error) {
-
-	if s.top == -1 {
-		err = fmt.Errorf("stack is empty, but pop gets still called")
-		log.Error().Err(err).Send()
-		return "", err
-	}
-
-	popped := s.parts[s.top]
-	s.parts = s.parts[:s.top]
-	s.top--
-
-	log.Trace().Msgf("popped value %v at position %d", part, s.top)
-	return popped, nil
-}
-
-
-*/
 func getReWriteOperation(host string) (rewrite func(*http.Request) *http.Request, err error) {
 	p := strings.Split(".", host)
 	if p[1] == string(Github) {
@@ -150,9 +91,7 @@ func getReWriteOperation(host string) (rewrite func(*http.Request) *http.Request
 
 func rewriteNoOp() (func(*http.Request) *http.Request, error) {
 	return func(r *http.Request) *http.Request {
-		log.Info().
-			Str("url", r.URL.String()).
-			Msgf("NOOP not rewriting url.")
+		log.Printf("[INFO]  NOOP not rewriting url url=%s\n", r.URL.String())
 		return r
 	}, nil
 }
@@ -166,10 +105,7 @@ func rewriteMyGithubURI() (func(*http.Request) *http.Request, error) {
 		rawUrl := fmt.Sprintf("%s://github.com/alex-held/%s", r.URL.Scheme, path)
 		newUrl, err := url2.ParseRequestURI(rawUrl)
 		if err != nil {
-			log.Error().Err(err).
-				Str("oldUrl", r.URL.String()).
-				Str("newUrl", rawUrl).
-				Msgf("unable to parse the new uri")
+			log.Printf("[ERRO]  unable to parse the new URL; oldURL=%s, newURL=%s\n", r.URL.String(), rawUrl)
 			return nil
 		}
 		r.URL = newUrl
@@ -186,10 +122,7 @@ func rewriteThirdPartyGithubURI(p []string) (func(*http.Request) *http.Request, 
 		rawUrl := fmt.Sprintf("%s://github.com/%s/%s", r.URL.Scheme, p[1], path)
 		newUrl, err := url2.ParseRequestURI(rawUrl)
 		if err != nil {
-			log.Error().Err(err).
-				Str("oldUrl", r.URL.String()).
-				Str("newUrl", rawUrl).
-				Msgf("unable to parse the new uri")
+			log.Printf("[ERRO]  unable to parse the new URL; oldURL=%s, newURL=%s\n", r.URL.String(), rawUrl)
 		}
 		r.URL = newUrl
 		return r
