@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const version = "v0.0.8"
+const version = "v0.0.9"
 
 // Config the plugin configuration.
 type Config struct {
